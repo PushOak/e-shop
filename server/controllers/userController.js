@@ -1,6 +1,11 @@
 const asyncHandler = require("express-async-handler"); // removes the need to type try/catch block everytime
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+};
 
 // Register new user
 const registerUser = asyncHandler(async (req, res) => {
@@ -10,12 +15,12 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!name || !email || !password) {
         res.status(400);
         throw new Error("Please fill in all of the required fields.");
-    }
+    };
 
     if (password.length < 6) {
         res.status(400);
         throw new Error("The password must be up to 6 characters.");
-    }
+    };
 
     // Check if user email already exists
     const existingUser = await User.findOne({ email });
@@ -37,6 +42,9 @@ const registerUser = asyncHandler(async (req, res) => {
         password: hashedPassword,
     });
 
+    // Generate token
+    const token = generateToken(user._id);
+
     if (user) {
         const { _id, name, email, photo, phone, bio } = user;
         res.status(201).json({
@@ -46,11 +54,12 @@ const registerUser = asyncHandler(async (req, res) => {
             photo,
             phone,
             bio,
+            token,
         });
     } else {
         res.status(400);
         throw new Error("Ivalid user data!");
-    }
+    };
 });
 
 module.exports = {
