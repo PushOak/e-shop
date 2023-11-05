@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const userRoute = require("./routes/userRoute");
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+
+// Error handling middleware
+app.use(errorHandler);
 
 // Connect to MongoDb and start the server
 mongoose
