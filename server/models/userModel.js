@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Please a a password"],
         minLength: [6, "Password must be up to 6 characters in length."],
-        maxLength: [23, "Password must not be more than 23 characters in length."],
+        // maxLength: [23, "Password must not be more than 23 characters in length."],
     },
     photo: {
         type: String,
