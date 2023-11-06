@@ -197,6 +197,36 @@ const updateUser = asyncHandler(async (req, res) => {
     } else {
         res.status(404);
         throw new Error("User not found.");
+    };
+});
+
+// Change password
+const changePassword = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    const { oldPassword, password } = req.body;
+
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found! Please login in or sign up.");
+    };
+
+    // Validate
+    if (!oldPassword || !password) {
+        res.sendStatus(400);
+        throw new Error("Please add old and new password.");
+    };
+
+    // Check if old password matches the new password in the DB
+    const passwordIsCorrect = await bcrypt.compare(oldPassword, user.password);
+
+    // Save new password to DB
+    if (user && passwordIsCorrect) {
+        user.password = password;
+        await user.save();
+        res.status(200).send("Password changed successfully.");
+    } else {
+        res.send(400);
+        throw new Error("Old password is incorrect.");
     }
 });
 
@@ -207,4 +237,5 @@ module.exports = {
     getUser,
     loginStatus,
     updateUser,
+    changePassword,
 };
