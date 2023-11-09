@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
         expires: new Date(Date.now() + 1000 * 86400), // 1 day
         sameSite: "none",
         secure: true,
-    })
+    });
 
     if (user) {
         const { _id, name, email, photo, phone, bio } = user;
@@ -121,7 +121,7 @@ const loginUser = asyncHandler(async (req, res) => {
             token,
         });
     } else {
-        res.status(400);
+        res.status(401);
         throw new Error("Invalid email or password.");
     }
 });
@@ -254,6 +254,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
         .randomBytes(32)
         .toString("hex")
         + user._id;
+    console.log(resetToken);
 
     // Hash token before saving to DB
     const hashedToken = crypto
@@ -270,7 +271,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }).save();
 
     // Construct reset URL
-    const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`
 
     // Reset email
     const message = `
@@ -299,8 +300,38 @@ const forgotPassword = asyncHandler(async (req, res) => {
 
 // Reset password
 const resetPassword = asyncHandler(async (req, res) => {
-    res.send("Reset password.");
-})
+    const { password } = req.body;
+    const { resetToken } = req.params;
+
+    // Hash token then compare it to the token in DB
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+
+    // Find token in DB
+    const userToken = await Token.findOne({
+        token: hashedToken,
+        expiresAt: { $gt: Date.now() },
+    });
+
+    if (!userToken) {
+        res.status(404);
+        throw new Error("Invalid or expired token.");
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Find user and update the hashed password
+    const user = await User.findById(userToken.userId);
+    user.password = hashedPassword; // Update to use the hashed password
+    await user.save();
+
+    res.status(200).json({
+        message: "Password reset successful, you may now login."
+    });
+});
 
 module.exports = {
     registerUser,
