@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
 
-        cd(null, Date().toISOString().replace(/:/g, "-") + file.originalname);
+        cd(null, new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname);
     }
 });
 
@@ -26,3 +26,5 @@ function fileFilter(req, file, cb) {
 };
 
 const upload = multer({ storage, fileFilter });
+
+module.exports = { upload };
