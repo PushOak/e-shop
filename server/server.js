@@ -7,6 +7,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(cors());
 
 // Routes middleware
 app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
+// app.use("/api/auth", authRoute); // to refactor the userController later 
 
 // Routes
 app.get("/", (req, res) => {
