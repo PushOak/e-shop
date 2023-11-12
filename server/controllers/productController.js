@@ -12,7 +12,7 @@ const createProduct = asyncHandler(async (req, res) => {
         throw new Error("Please fill in all of the fields.");
     }
 
-    // Handle image upload
+    // Handle file upload
     let fileData = {};
     if (req.file) {
         // Save a file to cloudinary
@@ -89,14 +89,77 @@ const deleteProduct = asyncHandler(async (req, res) => {
         throw new Error("User not authorized.");
     };
 
-    console.log(product);
     await product.deleteOne();
     res.status(200).json({ message: "Product deleted" });
 });
+
+// Update a product
+const updateProduct = asyncHandler(async (req, res) => {
+    const { name, category, quantity, price, description } = req.body;
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+
+    // if product doesn't exist
+    if (!product) {
+        res.status(404);
+        throw new Error("Product not found");
+    };
+
+    // match product to its user
+    if (product.user.toString() !== req.user.id) {
+        res.status(401);
+        throw new Error("User not authorized");
+    };
+
+    // Handle file upload
+    let fileData = {};
+    if (req.file) {
+        // Save a file to cloudinary
+        let uploadedFile;
+        try {
+            uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+                folder: "E-shop App",
+                resource_type: "image",
+            });
+        } catch (error) {
+            res.status(500);
+            throw new Error("Something went wrong! File could not be uploaded.");
+        };
+
+        fileData = {
+            fileName: req.file.originalname,
+            filePath: uploadedFile.secure_url,
+            fileType: req.file.mimetype,
+            fileSize: fileSizeFormatter(req.file.size, 2),
+        };
+    };
+
+    // update product
+    const updatedProduct = await Product.findByIdAndUpdate(
+        { _id: id },
+        {
+            name,
+            category,
+            quantity,
+            price,
+            description,
+            image: Object.keys(fileData).length === 0 ? product?.image : fileData,
+        },
+        {
+            new: true,
+            runValidators: true,
+        }
+    );
+
+    res.status(200).json(updatedProduct);
+});
+
 
 module.exports = {
     createProduct,
     getProducts,
     getSingleProduct,
     deleteProduct,
+    updateProduct,
 };

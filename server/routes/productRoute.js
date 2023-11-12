@@ -6,6 +6,7 @@ const {
     getProducts,
     getSingleProduct,
     deleteProduct,
+    updateProduct,
 } = require("../controllers/productController");
 const { upload } = require("../utils/fileUpload");
 
@@ -13,5 +14,6 @@ router.post("/", protect, upload.single("image"), createProduct);
 router.get("/all-products", protect, getProducts);
 router.get("/:id", protect, getSingleProduct);
 router.delete("/:id", protect, deleteProduct);
+router.patch("/:id", protect, updateProduct);
 
 module.exports = router;
