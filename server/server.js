@@ -9,6 +9,7 @@ const path = require("path");
 
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
+const contactUsRoute = require("./routes/contactUsRoute");
 const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
@@ -23,9 +24,10 @@ app.use(cors());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes middleware
+// app.use("/api/auth", authRoute); // to refactor the userController later 
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
-// app.use("/api/auth", authRoute); // to refactor the userController later 
+app.use("/api/contact-us", contactUsRoute);
 
 // Routes
 app.get("/", (req, res) => {
