@@ -24,7 +24,6 @@ const createProduct = asyncHandler(async (req, res) => {
             throw new Error("Something went wrong! File could not be uploaded.");
         };
 
-
         fileData = {
             fileName: req.file.originalname,
             filePath: uploadedFile.secure_url,
@@ -154,7 +153,6 @@ const updateProduct = asyncHandler(async (req, res) => {
 
     res.status(200).json(updatedProduct);
 });
-
 
 module.exports = {
     createProduct,
