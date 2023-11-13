@@ -26,22 +26,6 @@ const getUser = asyncHandler(async (req, res) => {
     }
 });
 
-// Get login status - whether user is logged in/out
-const loginStatus = asyncHandler(async (req, res) => {
-    const token = req.cookies.token;
-    if (!token) {
-        return res.json(false);
-    }
-
-    // Verify token
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (verified) {
-        return res.json(true);
-    } else {
-        return res.json(false);
-    }
-});
-
 // Update a user
 const updateUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
@@ -201,7 +185,6 @@ const resetPassword = asyncHandler(async (req, res) => {
 
 module.exports = {
     getUser,
-    loginStatus,
     updateUser,
     changePassword,
     forgotPassword,
