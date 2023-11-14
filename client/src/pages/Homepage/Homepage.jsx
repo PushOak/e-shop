@@ -2,6 +2,7 @@ import React from "react";
 import "./Homepage.scss";
 import { BsExplicit } from "react-icons/bs"
 import { Link } from "react-router-dom";
+import heroImg from "../../assets/inv-img.png"
 
 export default function Homepage() {
     return (
@@ -35,14 +36,30 @@ export default function Homepage() {
                         <p>Inventory system to control and manage various products in the warehouse in real time and it is integrated to make things easier in order to develop your business</p>
                         <div className="hero-buttons">
                             <button className="--btn --btn-secondary">
-                                <Link to="/dashboard">Dashboard</Link>
+                                <Link to="/dashboard">1 Month Free Trial</Link>
                             </button>
+                        </div>
+                        <div className="--flex-start">
+                            <NumberText num="14K" text="Brand owners" />
+                            <NumberText num="23K" text="Active users" />
+                            <NumberText num="500+" text="Partners" />
                         </div>
                     </div>
 
-                    <div className="hero-image"></div>
+                    <div className="hero-image">
+                        <img src={heroImg} alt="inventory" />
+                    </div>
                 </section>
             </div>
         </>
+    );
+};
+
+const NumberText = ({ num, text }) => {
+    return (
+        <div className="--mr">
+            <h3 className="--color-white">{num}</h3>
+            <p className="--color-white">{text}</p>
+        </div>
     );
 };
