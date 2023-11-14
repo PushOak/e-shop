@@ -1,11 +1,16 @@
 import React from "react";
 import "./sidebar.scss";
 
-export default function Sidebar() {
+export default function Sidebar({ children }) {
     return (
         <>
-            <div>
-                Sidebar
+            <div className="layout">
+                <div className="sidebar">
+                    <h2>Sidebar</h2>
+                </div>
+                <main>
+                    {children}
+                </main>
             </div>
         </>
     );

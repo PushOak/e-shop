@@ -1,11 +1,13 @@
 .layout {
   display: flex;
 }
+
 main {
   width: 100%;
   // padding: 20px;
   color: #ccc;
 }
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -28,10 +30,12 @@ main {
   background-color: var(--dark-blue);
   height: 70px;
 }
+
 .logo {
   font-size: 30px;
   color: var(--color-white);
 }
+
 .bars {
   display: flex;
   font-size: 25px;
@@ -92,7 +96,7 @@ main {
   transition: all 0.5s;
 }
 
-.sidebar-item.open > .sidebar-title .arrow-icon {
+.sidebar-item.open>.sidebar-title .arrow-icon {
   transform: rotate(90deg);
 }
 
@@ -101,7 +105,8 @@ main {
   height: 0;
   overflow: hidden;
 }
-.sidebar-item.open > .sidebar-content {
+
+.sidebar-item.open>.sidebar-content {
   height: auto;
 }
 
