@@ -17,13 +17,13 @@ export default function Login() {
 
                         <form>
                             <input
-                                type="text"
+                                type="email"
                                 placeholder="Your email"
                                 name="email"
                                 required
                             />
                             <input
-                                type="text"
+                                type="password"
                                 placeholder="Your password"
                                 name="password"
                                 required
