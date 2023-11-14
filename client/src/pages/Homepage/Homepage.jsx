@@ -1,5 +1,5 @@
 import React from "react";
-import "./Homepage.scss";
+import "./homepage.scss";
 import { BsExplicit } from "react-icons/bs"
 import { Link } from "react-router-dom";
 import heroImg from "../../assets/inv-img.png"
