@@ -4,10 +4,16 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { BsExplicit } from "react-icons/bs"
 import menu from "../../data/sidebar";
 import SidebarItem from "./SidebarItem";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar({ children }) {
     const [isOpen, setIsOpen] = useState(true);
     const toggle = () => setIsOpen(!isOpen);
+    const navigate = useNavigate();
+
+    const goHome = () => {
+        navigate("/");
+    }
 
     return (
         <>
@@ -19,6 +25,7 @@ export default function Sidebar({ children }) {
                             <BsExplicit
                                 size={35}
                                 style={{ cursor: "pointer" }}
+                                onClick={goHome}
                             />
                         </div>
 
