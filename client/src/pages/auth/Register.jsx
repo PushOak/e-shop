@@ -3,6 +3,8 @@ import styles from "./auth.module.scss";
 import { TiUserAddOutline } from "react-icons/ti";
 import Card from "../../components/card/Card";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { registerUser, validateEmail } from "../../services/authService";
 
 const initialState = {
     name: "",
@@ -12,7 +14,7 @@ const initialState = {
 };
 
 export default function Register() {
-    const [loading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState(initialState);
     const { name, email, password, password2 } = formData;
 
@@ -21,10 +23,36 @@ export default function Register() {
         setFormData({ ...formData, [name]: value });
     };
 
-    const register = (e) => {
+    const register = async (e) => {
         e.preventDefault();
 
-        console.log(formData);
+        if (!name || !email || !password) {
+            return toast.error("All fields are required to be filled!");
+        };
+        if (password.length < 6) {
+            return toast.error("Passwords must be at least 6 characters long!");
+        };
+        if (!validateEmail(email)) {
+            return toast.error("Passwords do not match!");
+        };
+        if (password !== password2) {
+            return toast.error("Please enter a valid email.");
+        };
+
+        const userData = {
+            name, email, password
+        };
+
+        setIsLoading(true);
+
+        try {
+            const data = await registerUser(userData);
+            console.log(data);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error.message);
+        }
     };
 
     return (
