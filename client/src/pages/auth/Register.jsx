@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./auth.module.scss";
 import { TiUserAddOutline } from "react-icons/ti";
 import Card from "../../components/card/Card";
 import { Link } from "react-router-dom";
 
+const initialState = {
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+};
+
 export default function Register() {
+    const [loading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState(initialState);
+    const { name, email, password, password2 } = formData;
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const register = (e) => {
+        e.preventDefault();
+
+        console.log(formData);
+    };
+
     return (
         <>
             <div className={`container ${styles.auth}`}>
@@ -15,30 +37,38 @@ export default function Register() {
                         </div>
                         <h2>Register</h2>
 
-                        <form>
+                        <form onSubmit={register}>
                             <input
                                 type="text"
                                 placeholder="Your name"
                                 name="name"
                                 required
+                                value={name}
+                                onChange={handleInputChange}
                             />
                             <input
                                 type="email"
                                 placeholder="Your email"
                                 name="email"
                                 required
+                                value={email}
+                                onChange={handleInputChange}
                             />
                             <input
                                 type="text"
                                 placeholder="Your password"
                                 name="password"
                                 required
+                                value={password}
+                                onChange={handleInputChange}
                             />
                             <input
                                 type="password"
                                 placeholder="Confirm password"
-                                name="password"
+                                name="password2"
                                 required
+                                value={password2}
+                                onChange={handleInputChange}
                             />
                             <button
                                 type="submit"
