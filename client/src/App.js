@@ -13,7 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
 import { getLoginStatus } from "./services/authService";
-import { SET_LOGIN } from "./redux/features/auth/auth/authSlice";
+import { SET_LOGIN } from "./redux/features/auth/authSlice";
 
 axios.defaults.withCredentials = true;
 

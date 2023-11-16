@@ -1,7 +1,7 @@
 import React from "react";
 import { logoutUser } from "../../services/authService";
 import { useDispatch, useSelector } from "react-redux";
-import { SET_LOGIN, selectName } from "../../redux/features/auth/auth/authSlice";
+import { SET_LOGIN, selectName } from "../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
