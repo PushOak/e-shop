@@ -38,14 +38,16 @@ export default function Register() {
             return toast.error("Passwords must be at least 6 characters long!");
         };
         if (!validateEmail(email)) {
-            return toast.error("Passwords do not match!");
+            return toast.error("Please enter a valid email.");
         };
         if (password !== password2) {
-            return toast.error("Please enter a valid email.");
+            return toast.error("Passwords do not match!");
         };
 
         const userData = {
-            name, email, password
+            name,
+            email,
+            password,
         };
 
         setIsLoading(true);
