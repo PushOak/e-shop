@@ -1,6 +1,8 @@
 import React from "react";
+import { useRedirectLoggedOutUser } from "../../customHook/useRedirectLoggetOutUser";
 
 export default function Dashboard() {
+    useRedirectLoggedOutUser("/login");
     return (
         <>
             <div>
