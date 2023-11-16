@@ -29,7 +29,7 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         if (!email || !password) {
-            return toast.error("");
+            return toast.error("All fields are required!");
         };
         if (!validateEmail(email)) {
             return toast.error("Please enter a valid email.")

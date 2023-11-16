@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./auth.module.scss";
 import { AiOutlineMail } from "react-icons/ai";
 import Card from "../../components/card/Card";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { forgotPassword, validateEmail } from "../../services/authService";
 
 export default function ForgotPassword() {
+    const [email, setEmail] = useState("");
+
+    const forgot = async (e) => {
+        e.preventDefault();
+        if (!email) {
+            return toast.error("Enter your email please.");
+        };
+        if (!validateEmail(email)) {
+            return toast.error("Please enter a valid email.")
+        };
+
+        const userData = {
+            email,
+        };
+
+        await forgotPassword(userData);
+        setEmail("");
+    };
+
     return (
         <>
             <div className={`container ${styles.auth}`}>
@@ -15,12 +36,14 @@ export default function ForgotPassword() {
                         </div>
                         <h2>Forgot Password ?</h2>
 
-                        <form>
+                        <form onSubmit={forgot}>
                             <input
                                 type="email"
                                 placeholder="Your email"
                                 name="email"
                                 required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                             <button
                                 type="submit"
