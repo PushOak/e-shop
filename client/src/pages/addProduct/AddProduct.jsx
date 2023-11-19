@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductForm from "../../components/productForm/ProductForm";
-import { selectIsLoading } from "../../redux/features/product/productSlice";
+import { createProduct, selectIsLoading } from "../../redux/features/product/productSlice";
+import { useNavigate } from "react-router-dom";
 
 
 const initialState = {
@@ -12,6 +13,8 @@ const initialState = {
 };
 
 export default function AddProduct() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [product, setProduct] = useState(initialState);
     const [productImage, setProductImage] = useState("");
     const [imagePreview, setImagePreview] = useState(null);
@@ -46,13 +49,35 @@ export default function AddProduct() {
     const saveProduct = async (e) => {
         e.preventDefault();
         const formData = new FormData();
+        formData.append("name", name);
+        formData.append("sku", generateSKU(category));
+        formData.append("category", category);
+        formData.append("quantity", quantity);
+        formData.append("price", price);
+        formData.append("description", description);
+        formData.append("image", productImage);
+
+        console.log(...formData);
+
+        await dispatch(createProduct(formData));
+
+        navigate("/dashboard");
     };
 
     return (
         <>
             <div>
                 <h3 className="--mt">Add New Product</h3>
-                <ProductForm />
+                <ProductForm
+                    product={product}
+                    productImage={productImage}
+                    imagePreview={imagePreview}
+                    description={description}
+                    setDescription={setDescription}
+                    handleInputChange={handleInputChange}
+                    handleImageChange={handleImageChange}
+                    saveProduct={saveProduct}
+                />
             </div>
         </>
     );
