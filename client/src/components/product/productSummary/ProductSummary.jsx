@@ -6,8 +6,10 @@ import { BiCategory } from "react-icons/bi";
 import InfoBox from "../../infobox/InfoBox";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    CALC_CATEGORY,
     CALC_OUT_OF_STOCK,
     CALC_STORE_VALUE,
+    selectCategory,
     selectOutOfStock,
     selectTotalStoreValue,
 } from "../../../redux/features/product/productSlice";
@@ -27,10 +29,12 @@ export default function ProductSummary({ products }) {
     const dispatch = useDispatch();
     const totalStoreValue = useSelector(selectTotalStoreValue);
     const outOfStock = useSelector(selectOutOfStock);
+    const category = useSelector(selectCategory);
 
     useEffect(() => {
         dispatch(CALC_STORE_VALUE(products));
         dispatch(CALC_OUT_OF_STOCK(products));
+        dispatch(CALC_CATEGORY(products));
     }, [dispatch, products]);
 
     return (
@@ -59,7 +63,7 @@ export default function ProductSummary({ products }) {
                     <InfoBox
                         icon={categoryIcon}
                         title={"All Categories"}
-                        count={"0"}
+                        count={category.length}
                         bgColor="card4"
                     />
                 </div>
