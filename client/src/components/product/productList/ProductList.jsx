@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./productList.scss";
 import { SpinnerImage } from "../../loader/Loader";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { AiOutlineEye } from "react-icons/ai";
 import Search from "../../search/Search";
+import { useDispatch, useSelector } from "react-redux";
+import { FILTER_PRODUCTS, selectFilteredProducts } from "../../../redux/features/product/filterSlice";
 
 export default function ProductList({ products, isLoading }) {
     const [search, setSearch] = useState("");
+    const filteredProducts = useSelector(selectFilteredProducts);
+    const dispatch = useDispatch();
 
     const shortenText = (text, n) => {
         if (text.length > n) {
@@ -16,6 +20,10 @@ export default function ProductList({ products, isLoading }) {
 
         return text;
     };
+
+    useEffect(() => {
+        dispatch(FILTER_PRODUCTS({ products, search }));
+    }, [products, search, dispatch]);
 
     return (
         <>
@@ -55,7 +63,7 @@ export default function ProductList({ products, isLoading }) {
 
                                 <tbody>
                                     {
-                                        products.map((product, index) => {
+                                        filteredProducts.map((product, index) => {
                                             const {
                                                 _id,
                                                 name,
