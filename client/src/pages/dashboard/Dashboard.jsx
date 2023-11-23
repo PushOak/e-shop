@@ -32,7 +32,7 @@ export default function Dashboard() {
         <>
             <div>
                 <h2>Dashboard</h2>
-                <ProductList />
+                <ProductList products={products} isLoading={isLoading} />
             </div>
         </>
     );
