@@ -6,6 +6,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import Search from "../../search/Search";
 import { useDispatch, useSelector } from "react-redux";
 import { FILTER_PRODUCTS, selectFilteredProducts } from "../../../redux/features/product/filterSlice";
+import ReactPaginate from "react-paginate";
 
 export default function ProductList({ products, isLoading }) {
     const [search, setSearch] = useState("");
@@ -24,6 +25,25 @@ export default function ProductList({ products, isLoading }) {
     useEffect(() => {
         dispatch(FILTER_PRODUCTS({ products, search }));
     }, [products, search, dispatch]);
+
+    //   Begin Pagination
+    const [currentItems, setCurrentItems] = useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
+    const itemsPerPage = 5;
+
+    useEffect(() => {
+        const endOffset = itemOffset + itemsPerPage;
+
+        setCurrentItems(filteredProducts.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(filteredProducts.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage, filteredProducts]);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % filteredProducts.length;
+        setItemOffset(newOffset);
+    };
+    //   End Pagination
 
     return (
         <>
@@ -63,7 +83,7 @@ export default function ProductList({ products, isLoading }) {
 
                                 <tbody>
                                     {
-                                        filteredProducts.map((product, index) => {
+                                        currentItems.map((product, index) => {
                                             const {
                                                 _id,
                                                 name,
@@ -87,17 +107,33 @@ export default function ProductList({ products, isLoading }) {
                                                             <FaEdit size={20} color={"green"} />
                                                         </span>
                                                         <span>
-                                                            <FaTrashAlt size={20} color={"red"} />
+                                                            <FaTrashAlt
+                                                                size={20}
+                                                                color={"red"}
+                                                            />
                                                         </span>
                                                     </td>
                                                 </tr>
-                                            )
-                                        })
-                                    }
+                                            );
+                                        })}
                                 </tbody>
                             </table>
                         )}
                     </div>
+                    <ReactPaginate
+                        breakLabel="..."
+                        nextLabel="Next"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        pageCount={pageCount}
+                        previousLabel="Prev"
+                        renderOnZeroPageCount={null}
+                        containerClassName="pagination"
+                        pageLinkClassName="page-num"
+                        previousLinkClassName="page-num"
+                        nextLinkClassName="page-num"
+                        activeLinkClassName="activePage"
+                    />
                 </div>
             </div>
         </>
