@@ -16,6 +16,7 @@ import { getLoginStatus } from "./services/authService";
 import { SET_LOGIN } from "./redux/features/auth/authSlice";
 import AddProduct from "./pages/addProduct/AddProduct";
 import ProductDetails from "./components/product/productDetails/ProductDetails";
+import EditProduct from "./pages/editProduct/EditProduct";
 
 axios.defaults.withCredentials = true;
 
@@ -42,29 +43,49 @@ function App() {
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
 
-          <Route path="/dashboard" element={
-            <Sidebar>
-              <Layout>
-                <Dashboard />
-              </Layout>
-            </Sidebar>
-          } />
+          <Route
+            path="/dashboard"
+            element={
+              <Sidebar>
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              </Sidebar>
+            }
+          />
 
-          <Route path="/add-product" element={
-            <Sidebar>
-              <Layout>
-                <AddProduct />
-              </Layout>
-            </Sidebar>
-          } />
+          <Route
+            path="/add-product"
+            element={
+              <Sidebar>
+                <Layout>
+                  <AddProduct />
+                </Layout>
+              </Sidebar>
+            }
+          />
 
-          <Route path="/product-details/:id" element={
-            <Sidebar>
-              <Layout>
-                <ProductDetails />
-              </Layout>
-            </Sidebar>
-          } />
+          <Route
+            path="/product-details/:id"
+            element={
+              <Sidebar>
+                <Layout>
+                  <ProductDetails />
+                </Layout>
+              </Sidebar>
+            }
+          />
+
+          <Route
+            path="/edit-product/:id"
+            element={
+              <Sidebar>
+                <Layout>
+                  <EditProduct />
+                </Layout>
+              </Sidebar>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>
