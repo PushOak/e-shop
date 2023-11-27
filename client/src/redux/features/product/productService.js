@@ -10,21 +10,35 @@ const createProduct = async (formData) => {
     return response.data;
 };
 
+// Get a Product
+const getProduct = async (id) => {
+    const response = await axios.get(API_URL + id);
+    return response.data;
+};
+
 // Get all products
 const getProducts = async () => {
     const response = await axios.get(API_URL);
     return response.data;
 };
 
+// Update a Product
+const updateProduct = async (id) => {
+    const response = await axios.get(API_URL + id);
+    return response.data;
+};
+
 // Delete a product
-const deleteProduct = async (id) => {
-    const response = await axios.delete(API_URL + id);
+const deleteProduct = async (id, formData) => {
+    const response = await axios.patch(`${API_URL}${id}`, formData);
     return response.data;
 };
 
 const productService = {
     createProduct,
     getProducts,
+    getProduct,
+    updateProduct,
     deleteProduct,
 };
 
