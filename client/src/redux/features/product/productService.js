@@ -23,14 +23,14 @@ const getProducts = async () => {
 };
 
 // Update a Product
-const updateProduct = async (id) => {
-    const response = await axios.get(API_URL + id);
+const updateProduct = async (id, formData) => {
+    const response = await axios.patch(`${API_URL}${id}`, formData);
     return response.data;
 };
 
 // Delete a product
-const deleteProduct = async (id, formData) => {
-    const response = await axios.patch(`${API_URL}${id}`, formData);
+const deleteProduct = async (id) => {
+    const response = await axios.delete(API_URL + id);
     return response.data;
 };
 

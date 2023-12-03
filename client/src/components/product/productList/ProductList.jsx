@@ -10,10 +10,12 @@ import ReactPaginate from "react-paginate";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { deleteProduct, getProducts } from "../../../redux/features/product/productSlice";
+import { Link } from "react-router-dom";
 
 export default function ProductList({ products, isLoading }) {
     const [search, setSearch] = useState("");
     const filteredProducts = useSelector(selectFilteredProducts);
+
     const dispatch = useDispatch();
 
     const shortenText = (text, n) => {
@@ -126,10 +128,14 @@ export default function ProductList({ products, isLoading }) {
                                                     <td>{price * quantity}{"$"}</td>
                                                     <td className="icons">
                                                         <span>
-                                                            <AiOutlineEye size={25} color={"purple"} />
+                                                            <Link to={`/product-details/${_id}`}>
+                                                                <AiOutlineEye size={25} color={"purple"} />
+                                                            </Link>
                                                         </span>
                                                         <span>
-                                                            <FaEdit size={20} color={"green"} />
+                                                            <Link to={`/edit-product/${_id}`}>
+                                                                <FaEdit size={20} color={"green"} />
+                                                            </Link>
                                                         </span>
                                                         <span>
                                                             <FaTrashAlt

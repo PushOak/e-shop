@@ -102,13 +102,13 @@ const updateProduct = asyncHandler(async (req, res) => {
     // if product doesn't exist
     if (!product) {
         res.status(404);
-        throw new Error("Product not found");
+        throw new Error("Product not found!");
     };
 
     // match product to its user
     if (product.user.toString() !== req.user.id) {
         res.status(401);
-        throw new Error("User not authorized");
+        throw new Error("User not authorized!");
     };
 
     // Handle file upload

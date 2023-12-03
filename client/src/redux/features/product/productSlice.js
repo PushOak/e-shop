@@ -92,7 +92,7 @@ export const getProduct = createAsyncThunk(
 
 // Update product
 export const updateProduct = createAsyncThunk(
-    "products/update-product",
+    "products/edit-product",
     async ({ id, formData }, thunkAPI) => {
         try {
             return await productService.updateProduct(id, formData);
@@ -244,6 +244,7 @@ export const {
 } = productSlice.actions;
 
 export const selectIsLoading = (state) => state.product.isLoading;
+export const selectProduct = (state) => state.product.product;
 export const selectTotalStoreValue = (state) => state.product.totalStoreValue;
 export const selectOutOfStock = (state) => state.product.outOfStock;
 export const selectCategory = (state) => state.product.category;
