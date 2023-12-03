@@ -122,3 +122,19 @@ export const getLoginStatus = async () => {
         toast.error(message);
     };
 };
+
+// Get user profile
+export const getUser = async () => {
+    try {
+        const response = await axios.get(`${SERVER_URL}/api/users/get-user/`);
+        return response.data;
+    } catch (error) {
+        const message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString();
+        toast.error(message);
+    };
+};

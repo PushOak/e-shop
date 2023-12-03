@@ -36,8 +36,8 @@ const deleteProduct = async (id) => {
 
 const productService = {
     createProduct,
-    getProducts,
     getProduct,
+    getProducts,
     updateProduct,
     deleteProduct,
 };
