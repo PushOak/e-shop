@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./profile.scss";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { selectUser } from "../../redux/features/auth/authSlice";
 import Loader from "../../components/loader/Loader";
 import Card from "../../components/card/Card";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { updateUser } from "../../services/authService";
 
 export default function EditProfile() {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const user = useSelector(selectUser);
+    const { email } = user;
+
+    useEffect(() => {
+        if (!email) {
+            navigate("/profile");
+        }
+    }, [email, navigate]);
 
     const initialState = {
         name: user?.name,
@@ -29,9 +40,54 @@ export default function EditProfile() {
         setProfileImage(e.target.files[0]);
     };
 
-    const saveProfile = (e) => {
+    const saveProfile = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        try {
+            // Handle image upload to cloudinary
+            let imageURL;
+            if (
+                profileImage &&
+                (
+                    profileImage.type === "image/jpeg" ||
+                    profileImage.type === "image/jpg" ||
+                    profileImage.type === "image/png"
+                )
+            ) {
+                const image = new FormData();
+                image.append("file", profileImage);
+                image.append("cloud_name", "dl4nfaigy");
+                image.append("upload_preset", "e-shop");
 
+                // First save the image to cloudinary
+                const response = await fetch(
+                    "https://api.cloudinary.com/v1_1/dl4nfaigy/image/upload",
+                    { method: "post", body: image }
+                );
+
+                const imgData = await response.json()
+                imageURL = imgData.url.toString();
+            };
+
+            // Save profile
+            const formData = {
+                name: profile.name,
+                phone: profile.phone,
+                bio: profile.bio,
+                photo: profileImage ? imageURL : profile.photo,
+            };
+
+            const data = await updateUser(formData);
+            console.log(data);
+            toast.success("User updated!");
+            navigate("/profile");
+            setIsLoading(false);
+
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+            toast.error(error.message);
+        };
     };
 
     return (
