@@ -37,6 +37,7 @@ export const loginUser = async (userData) => {
             `${SERVER_URL}/api/auth/login`,
             userData,
         );
+        console.log('Login response:', response);
         if (response.statusText === "OK") {
             toast.success("Logged in successfully!");
         };
@@ -143,6 +144,22 @@ export const getUser = async () => {
 export const updateUser = async (formData) => {
     try {
         const response = await axios.patch(`${SERVER_URL}/api/users/update-user/`, formData);
+        return response.data;
+    } catch (error) {
+        const message = (
+            error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            error.message ||
+            error.toString();
+        toast.error(message);
+    };
+};
+
+// Change password
+export const changePassword = async (formData) => {
+    try {
+        const response = await axios.patch(`${SERVER_URL}/api/users/change-password/`, formData);
         return response.data;
     } catch (error) {
         const message = (

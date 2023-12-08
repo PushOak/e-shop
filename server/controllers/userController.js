@@ -74,7 +74,9 @@ const changePassword = asyncHandler(async (req, res) => {
 
     // Save new password to DB
     if (user && passwordIsCorrect) {
-        user.password = password;
+        // Hash the new password before saving it to the database
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
         await user.save();
         res.status(200).send("Password changed successfully.");
     } else {

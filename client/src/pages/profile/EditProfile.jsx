@@ -7,6 +7,7 @@ import Card from "../../components/card/Card";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { updateUser } from "../../services/authService";
+import ChangePassword from "../../components/changePassword/ChangePassword";
 
 export default function EditProfile() {
     const navigate = useNavigate();
@@ -154,6 +155,8 @@ export default function EditProfile() {
                         </span>
                     </form>
                 </Card>
+                <br />
+                <ChangePassword />
             </div>
         </>
     );
